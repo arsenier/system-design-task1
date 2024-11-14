@@ -1,0 +1,81 @@
+vars: {
+    d2-config: {
+        layout-engine: elk
+        # Terminal theme code
+        theme-id: 300
+    }
+}
+direction: right
+
+user: {
+  shape: person
+}
+
+frontend
+
+user->frontend
+
+item_service: Item service{
+    
+    item_db: Item DB\nдокументная{
+        shape: cylinder
+        # style.stroke: deepskyblue
+    }
+}
+
+
+# item_service->item_db
+
+recomendation: Recomendation service{
+
+    recomendation_db: Recomendation DB\nколоночная{
+        shape: cylinder
+    }
+}
+    
+
+# recomendation->recomendation_db
+
+history: History service{
+
+    
+    history_db: History DB\nреляционная{
+        shape: cylinder
+    }
+}
+
+# history->history_db
+
+search_service: Search service{
+
+    search_db: Elastic search{
+        shape: cylinder
+    }
+}
+
+search_service->history
+search_service->recomendation
+search_service->item_service
+
+catalogue: Catalogue{
+
+    catalogue_db: Catalogue\nграфовая БД{
+        shape: cylinder
+    }
+}
+
+catalogue->item_service
+
+
+auth_proxy: Auth proxy{
+
+    auth_db:Auth DB\nkey-value{
+        shape: cylinder
+    }
+}
+
+frontend->auth_proxy
+
+auth_proxy->catalogue
+
+auth_proxy->search_service
